@@ -124,12 +124,29 @@ onMounted(load)
                 <span class="text-xl font-medium tabular-nums">{{ rankInfo.totalScore }}</span>
               </div>
               <div class="flex items-baseline justify-between gap-2">
-                <span class="text-muted-foreground">Проход (всего мест)</span>
-                <span class="font-medium">{{ PASS_SLOTS }} человек</span>
+                <span class="text-muted-foreground">Проход по направлениям</span>
+                <span class="font-medium">{{ rankInfo.passPercent }}% в каждом направлении</span>
               </div>
-              <div class="flex items-baseline justify-between gap-2">
-                <span class="text-muted-foreground">Процент на проход</span>
-                <span class="tabular-nums">{{ rankInfo.passPercent }}% участников проходят</span>
+              <div
+                v-if="rankInfo.directionPasses && Object.keys(rankInfo.directionPasses).length"
+                class="flex flex-col gap-1.5 rounded-lg border bg-muted/30 p-2 text-sm"
+              >
+                <span class="text-muted-foreground font-medium">По направлениям:</span>
+                <div
+                  v-for="(info, dir) in rankInfo.directionPasses"
+                  :key="dir"
+                  class="flex items-center justify-between gap-2"
+                >
+                  <span class="truncate">{{ dir.replace('Backend - ', '').replace('Mobile - ', '') }}</span>
+                  <span class="shrink-0 tabular-nums">
+                    {{ info.rank }} / {{ info.totalInDirection }}
+                    <span
+                      :class="info.passes ? 'text-green-600 dark:text-green-400' : 'text-amber-600 dark:text-amber-400'"
+                    >
+                      {{ info.passes ? '✓ проход' : '—' }}
+                    </span>
+                  </span>
+                </div>
               </div>
               <div
                 class="rounded-lg border px-3 py-2 text-center font-medium"
@@ -137,6 +154,9 @@ onMounted(load)
               >
                 {{ rankInfo.passes ? 'Вы проходите' : 'Вы не проходите' }}
               </div>
+              <p class="rounded-lg border border-red-500/50 bg-red-500/10 px-3 py-2 text-xs text-red-700 dark:text-red-400">
+                Информация о проходе / непроходе примерная и может не совпадать с итоговым решением судей.
+              </p>
             </div>
           </CardContent>
         </Card>
