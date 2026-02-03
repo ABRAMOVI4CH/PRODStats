@@ -36,7 +36,7 @@ function hasChildren(item: { children?: unknown }): item is { children: { name: 
     <CardHeader>
       <CardTitle>Статистика по направлениям</CardTitle>
       <CardDescription>
-        Участники и средний балл (0 баллов не учитываются). Backend объединён — детали по ЯП в выпадающем списке.
+        Участники и средний балл (0 баллов не учитываются). Backend и Mobile объединены — детали по ЯП/платформам в выпадающем списке.
       </CardDescription>
     </CardHeader>
     <CardContent>
@@ -69,14 +69,14 @@ function hasChildren(item: { children?: unknown }): item is { children: { name: 
                 </DropdownMenuTrigger>
                 <DropdownMenuContent align="start" class="w-72">
                   <div class="border-b px-3 py-2 text-xs font-medium text-muted-foreground">
-                    Backend по языкам
+                    {{ item.name === 'Backend' ? 'Backend по языкам' : 'Mobile по платформам' }}
                   </div>
                   <div
                     v-for="ch in item.children"
                     :key="ch.name"
                     class="flex items-center justify-between gap-4 px-3 py-2 text-sm"
                   >
-                    <span>{{ ch.name.replace('Backend - ', '') }}</span>
+                    <span>{{ ch.name.replace('Backend - ', '').replace('Mobile - ', '') }}</span>
                     <span class="tabular-nums">{{ ch.count }} уч., ср. {{ ch.avg }}</span>
                   </div>
                 </DropdownMenuContent>

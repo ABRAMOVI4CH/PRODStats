@@ -95,7 +95,8 @@ const chartConfig = {
         </Select>
       </CardHeader>
       <CardContent>
-        <ChartContainer :config="chartConfig" class="aspect-video h-[280px] w-full">
+        <div class="overflow-x-auto sm:overflow-visible -mx-2 sm:mx-0">
+          <ChartContainer :config="chartConfig" class="aspect-video h-[280px] min-w-[480px] w-full sm:min-w-0">
           <VisXYContainer
             :data="chartData"
             :margin="{ left: -24 }"
@@ -133,6 +134,7 @@ const chartConfig = {
             />
           </VisXYContainer>
         </ChartContainer>
+        </div>
       </CardContent>
     </Card>
     <Card>

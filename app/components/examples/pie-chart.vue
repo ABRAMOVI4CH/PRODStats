@@ -70,11 +70,12 @@ const totalVisitors = computed(() => chartData.reduce((acc, curr) => acc + curr.
       <CardDescription>January - June 2024</CardDescription>
     </CardHeader>
     <CardContent class="flex-1 pb-0">
+      <div class="overflow-x-auto sm:overflow-visible -mx-2 sm:mx-0">
       <ChartContainer
         :config="chartConfig"
-        class="mx-auto aspect-square max-h-[250px]"
+        class="mx-auto aspect-square max-h-[280px] min-w-[280px] sm:min-w-0 sm:max-h-[250px]"
         :style="{
-          '--vis-donut-central-label-font-size': 'var(--text-3xl)',
+          '--vis-donut-central-label-font-size': 'clamp(1.5rem, 5vw, 1.875rem)',
           '--vis-donut-central-label-font-weight': 'var(--font-weight-bold)',
           '--vis-donut-central-label-text-color': 'var(--foreground)',
           '--vis-donut-central-sub-label-text-color': 'var(--muted-foreground)',
@@ -99,6 +100,7 @@ const totalVisitors = computed(() => chartData.reduce((acc, curr) => acc + curr.
           />
         </VisSingleContainer>
       </ChartContainer>
+      </div>
     </CardContent>
     <CardFooter class="flex-col gap-2 text-sm">
       <div class="flex items-center gap-2 font-medium leading-none">

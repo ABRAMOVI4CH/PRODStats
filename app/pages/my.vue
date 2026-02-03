@@ -196,7 +196,8 @@ onMounted(load)
           </CardDescription>
         </CardHeader>
         <CardContent>
-          <ChartContainer :config="barChartConfig" class="h-[280px] w-full">
+          <div class="overflow-x-auto sm:overflow-visible -mx-2 sm:mx-0">
+            <ChartContainer :config="barChartConfig" class="h-[280px] min-w-[480px] w-full sm:min-w-0">
             <VisXYContainer
               :data="barChartData"
               :margin="{ left: -24 }"
@@ -227,6 +228,7 @@ onMounted(load)
               <ChartTooltip />
             </VisXYContainer>
           </ChartContainer>
+          </div>
         </CardContent>
       </Card>
 
@@ -239,9 +241,10 @@ onMounted(load)
             </CardDescription>
           </CardHeader>
           <CardContent>
+            <div class="overflow-x-auto sm:overflow-visible -mx-2 sm:mx-0">
             <ChartContainer
               :config="donutChartConfig"
-              class="mx-auto aspect-square max-h-[260px]"
+              class="mx-auto aspect-square max-h-[260px] min-w-[280px] sm:min-w-0"
               :style="{
                 '--vis-donut-central-label-font-size': 'var(--text-2xl)',
                 '--vis-donut-central-label-font-weight': 'var(--font-weight-bold)',
@@ -265,6 +268,7 @@ onMounted(load)
                 />
               </VisSingleContainer>
             </ChartContainer>
+            </div>
           </CardContent>
         </Card>
 

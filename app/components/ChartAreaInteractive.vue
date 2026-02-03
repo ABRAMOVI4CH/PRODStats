@@ -214,7 +214,8 @@ const filterRange = computed(() => {
       </Select>
     </CardHeader>
     <CardContent class="px-2 pt-4 sm:px-6 sm:pt-6 pb-4">
-      <ChartContainer :config="chartConfig" class="aspect-auto h-[250px] w-full" :cursor="false">
+      <div class="overflow-x-auto sm:overflow-visible -mx-2 sm:mx-0">
+        <ChartContainer :config="chartConfig" class="aspect-auto h-[250px] min-w-[480px] w-full sm:min-w-0" :cursor="false">
         <VisXYContainer
           :data="filterRange"
           :svg-defs="svgDefs"
@@ -270,6 +271,7 @@ const filterRange = computed(() => {
 
         <ChartLegendContent />
       </ChartContainer>
+      </div>
     </CardContent>
   </Card>
 </template>

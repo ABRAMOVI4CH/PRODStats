@@ -49,7 +49,8 @@ const chartConfig = {
       <CardDescription>January - June 2024</CardDescription>
     </CardHeader>
     <CardContent>
-      <ChartContainer :config="chartConfig">
+      <div class="overflow-x-auto sm:overflow-visible -mx-2 sm:mx-0">
+        <ChartContainer :config="chartConfig" class="min-w-[480px] w-full sm:min-w-0">
         <VisXYContainer
           :data="chartData"
           :margin="{ left: -24 }"
@@ -89,6 +90,7 @@ const chartConfig = {
           />
         </VisXYContainer>
       </ChartContainer>
+      </div>
     </CardContent>
     <CardFooter class="flex-col items-start gap-2 text-sm">
       <div class="flex gap-2 font-medium leading-none">

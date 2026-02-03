@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import {
-  IconBrandAndroid,
   IconBrandApple,
   IconBrandGithub,
   IconChartBar,
@@ -34,8 +33,7 @@ const data = {
     { title: "Главная", url: "/", icon: IconDashboard },
     { title: "Backend", url: "/backend", icon: IconCode },
     { title: "Frontend", url: "/frontend", icon: IconCode },
-    { title: "iOS", url: "/ios", icon: IconBrandApple },
-    { title: "Android", url: "/android", icon: IconBrandAndroid },
+    { title: "Mobile", url: "/mobile", icon: IconBrandApple },
     { title: "ML", url: "/ml", icon: IconChartBar },
   ],
 }

@@ -156,17 +156,18 @@ const total = computed(() => ({
           class="data-[active=true]:bg-muted/50 flex flex-1 flex-col justify-center gap-1 border-t px-6 py-4 text-left even:border-l sm:border-t-0 sm:border-l sm:px-8 sm:py-6"
           @click="activeChart = chart"
         >
-          <span class="text-muted-foreground text-xs">
+          <span class="text-muted-foreground text-sm sm:text-xs">
             {{ chartConfig[chart].label }}
           </span>
-          <span class="text-lg leading-none font-bold sm:text-3xl">
+          <span class="text-xl leading-none font-bold sm:text-3xl">
             {{ total[chart as keyof typeof total].toLocaleString() }}
           </span>
         </button>
       </div>
     </CardHeader>
     <CardContent class="px-2 sm:p-6">
-      <ChartContainer :config="chartConfig" class="aspect-auto h-[250px] w-full" cursor>
+      <div class="overflow-x-auto sm:overflow-visible -mx-2 sm:mx-0">
+        <ChartContainer :config="chartConfig" class="aspect-auto h-[280px] min-w-[480px] w-full sm:min-w-0 sm:h-[250px]" cursor>
         <VisXYContainer
           :data="chartData"
           :margin="{ left: -24 }"
@@ -212,6 +213,7 @@ const total = computed(() => ({
           />
         </VisXYContainer>
       </ChartContainer>
+      </div>
     </CardContent>
   </Card>
 </template>

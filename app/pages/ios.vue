@@ -1,16 +1,8 @@
 <script setup lang="ts">
-import GroupStatsDetail from '@/components/GroupStatsDetail.vue'
-
 definePageMeta({ layout: 'default' })
-
-const { load } = useStatsData()
-onMounted(load)
+await navigateTo('/mobile', { redirectCode: 302 })
 </script>
 
 <template>
-  <GroupStatsDetail
-    group-key="ios"
-    title="Mobile — iOS"
-    description="Статистика по направлению Mobile - iOS. 0 баллов не учитываются."
-  />
+  <div />
 </template>

@@ -8,8 +8,9 @@ const pageTitles: Record<string, string> = {
   '/my': 'Моя статистика',
   '/backend': 'Backend',
   '/frontend': 'Frontend',
-  '/ios': 'iOS',
-  '/android': 'Android',
+  '/mobile': 'Mobile',
+  '/ios': 'Mobile',
+  '/android': 'Mobile',
   '/ml': 'ML',
 }
 const pageTitle = computed(() => pageTitles[route.path] ?? 'Статистика')

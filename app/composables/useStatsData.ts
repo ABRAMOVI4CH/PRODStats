@@ -50,8 +50,7 @@ export interface StatsData {
 export const GROUPS = {
   backend: ['Backend - Python', 'Backend - NodeJS', 'Backend - Kotlin', 'Backend - Java', 'Backend - Golang', 'Backend - Custom', 'Backend - .NET'],
   frontend: ['Frontend'],
-  ios: ['Mobile - iOS'],
-  android: ['Mobile - Android'],
+  mobile: ['Mobile - iOS', 'Mobile - Android'],
   ml: ['ML'],
 } as const
 
@@ -190,11 +189,29 @@ export function useStatsData() {
         }
       : null
     if (backendAgg) backendAgg.avg = backendAgg.count > 0 ? Math.round((backendAgg.sum / backendAgg.count) * 100) / 100 : 0
+    const mobileDirections = GROUPS.mobile
+      .map(name => ({ name, ...d.directions[name] }))
+      .filter(x => x.count > 0)
+      .sort((a, b) => b.count - a.count)
+    const mobileAgg = mobileDirections.length
+      ? {
+          name: 'Mobile',
+          count: mobileDirections.reduce((s, x) => s + x.count, 0),
+          sum: mobileDirections.reduce((s, x) => s + x.sum, 0),
+          avg: 0,
+          children: mobileDirections,
+        }
+      : null
+    if (mobileAgg) mobileAgg.avg = mobileAgg.count > 0 ? Math.round((mobileAgg.sum / mobileAgg.count) * 100) / 100 : 0
     const others = directionStatsList.value.filter(
-      item => !GROUPS.backend.includes(item.name as typeof GROUPS.backend[number]),
+      item =>
+        !GROUPS.backend.includes(item.name as (typeof GROUPS.backend)[number]) &&
+        !GROUPS.mobile.includes(item.name as (typeof GROUPS.mobile)[number]),
     )
-    if (backendAgg) return [backendAgg, ...others]
-    return others
+    const result: typeof others = []
+    if (backendAgg) result.push(backendAgg)
+    if (mobileAgg) result.push(mobileAgg)
+    return [...result, ...others]
   })
 
   function directionStatsForGroup(groupKey: GroupKey) {
