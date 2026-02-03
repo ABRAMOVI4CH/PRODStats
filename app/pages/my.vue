@@ -30,7 +30,7 @@ const CHART_COLORS = ['var(--chart-1)', 'var(--chart-2)', 'var(--chart-3)', 'var
 definePageMeta({ layout: 'default' })
 
 const route = useRoute()
-const { load, getRowByCode, getRankInfo, PASS_SLOTS } = useStatsData()
+const { load, getRowByCode, getRankInfo, PASS_PERCENT } = useStatsData()
 
 const code = computed(() => (route.query.code as string) ?? '')
 const row = computed(() => (code.value ? getRowByCode(code.value) : null))
@@ -108,7 +108,7 @@ onMounted(load)
           <CardHeader>
             <CardTitle>Место в рейтинге</CardTitle>
             <CardDescription>
-              Рейтинг по сумме баллов по всем направлениям. Проходит {{ PASS_SLOTS }} человек.
+              Рейтинг по сумме баллов. По каждому направлению проходят {{ PASS_PERCENT }}% участников (с ненулевым баллом по этому направлению).
             </CardDescription>
           </CardHeader>
           <CardContent class="space-y-4">

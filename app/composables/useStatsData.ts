@@ -25,6 +25,13 @@ export interface ScoreBucketItem {
   count: number
 }
 
+export interface DirectionPassInfo {
+  rank: number
+  totalInDirection: number
+  passSlots: number
+  passes: boolean
+}
+
 export interface RowByCode {
   code: string
   scores: Record<string, number>
@@ -263,7 +270,7 @@ export function useStatsData() {
     })
   }
 
-  const PASS_SLOTS = 300
+  const PASS_PERCENT = 40
 
   function totalScoreForRow(row: RowByCode): number {
     return Object.values(row.scores).reduce((a, b) => a + (Number(b) || 0), 0)
@@ -275,6 +282,20 @@ export function useStatsData() {
     return d.rawRows
       .map(r => ({ ...r, totalScore: totalScoreForRow(r) }))
       .sort((a, b) => b.totalScore - a.totalScore)
+  })
+
+  const directionRanked = computed(() => {
+    const d = data.value
+    if (!d?.rawRows?.length) return {} as Record<string, { code: string; score: number }[]>
+    const out: Record<string, { code: string; score: number }[]> = {}
+    for (const name of d.directionNames) {
+      const list = d.rawRows
+        .filter(r => (r.scores[name] ?? 0) > 0)
+        .map(r => ({ code: r.code, score: r.scores[name]! }))
+        .sort((a, b) => b.score - a.score)
+      out[name] = list
+    }
+    return out
   })
 
   function getRowByCode(code: string): RowByCode | null {
@@ -293,24 +314,37 @@ export function useStatsData() {
     totalScore: number
     passes: boolean
     totalParticipants: number
-    passSlots: number
     passPercent: number
+    directionPasses: Record<string, DirectionPassInfo>
   } | null {
     const row = getRowByCode(code)
     if (!row) return null
     const ranked = rowsRanked.value
+    const dirRanks = directionRanked.value
     const totalScore = totalScoreForRow(row)
     const rank = ranked.findIndex(r => r.code === row.code) + 1
     if (rank <= 0) return null
     const totalParticipants = ranked.length
-    const passPercent = totalParticipants > 0 ? Math.round((PASS_SLOTS / totalParticipants) * 1000) / 10 : 0
+    const directionPasses: Record<string, DirectionPassInfo> = {}
+    let passesAny = false
+    for (const [dir, score] of Object.entries(row.scores)) {
+      if (score == null || score <= 0) continue
+      const list = dirRanks[dir]
+      if (!list?.length) continue
+      const dirRank = list.findIndex(r => r.code === row.code) + 1
+      if (dirRank <= 0) continue
+      const passSlots = Math.floor(list.length * PASS_PERCENT / 100)
+      const passes = dirRank <= passSlots
+      if (passes) passesAny = true
+      directionPasses[dir] = { rank: dirRank, totalInDirection: list.length, passSlots, passes }
+    }
     return {
       rank,
       totalScore: Math.round(totalScore * 100) / 100,
-      passes: rank <= PASS_SLOTS,
+      passes: passesAny,
       totalParticipants,
-      passSlots: PASS_SLOTS,
-      passPercent,
+      passPercent: PASS_PERCENT,
+      directionPasses,
     }
   }
 
@@ -325,6 +359,6 @@ export function useStatsData() {
     scoreBucketsForGroup,
     getRowByCode,
     getRankInfo,
-    PASS_SLOTS,
+    PASS_PERCENT,
   }
 }
